@@ -24,8 +24,10 @@ class App extends Component {
     setInterval(() => this.updateData(), 600);
     if (window.web3) {
       let jsonContract = require('./Supersymmetry.json');
+      window.ethereum.enable();
       this.web3 = new Web3(window.web3.currentProvider);
       this.contract = new this.web3.eth.Contract(jsonContract, this.ethContractAddress)
+  
     }
     else {
       alert('You have to install MetaMask !');
