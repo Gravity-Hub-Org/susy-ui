@@ -1,45 +1,48 @@
   
-# SuSy: Technical requirement
+# SuSy: Technical requirements
 
 ### Abstract
 
-This document represents technical details for SuSy and recommendations on how to implement concrete interfaces. *Core principles of interfaces* and *abstractions* must not be violated. 
+This document describes technical requirements for SuSy and recommendations on how to implement concrete interfaces. When implementing new modules for SuSy, the *core principles of interfaces* and *abstractions* must not be violated. 
 
 ---
 ### Table Of Contents
 
-This document consists of several parts. We’ll only dive into vital parts of the system. 
 1. Gravity Node participation.
 2. SuSy Extractor’s uniqueness and specifics.
 3. Future extension of the App.
 
+This document only describes the most vital components of the system. 
+
+
 ---
-#### 1. Gravity Node Participation
+#### 1. Gravity Node in relation to SuSy
 
-Strictly speaking, the SuSy application conforms to all of the requirements specified by Gravity Protocol. This includes the existence of specific Nebulas (at least 2) and 2 specific extractors for each.
+Strictly speaking, the SuSy application conforms to all of the requirements specified by Gravity Protocol. This includes the requirement of having at least two specific Nebulae (smart contracts in a targetchain) and two specific extractors for each Nebula.
 
-Comparing to *ordinary Gravity Protocol Node* It worth mentioning that *SuSy app* differs from it ***only by having specific nebulas and extractors***. SuSy conforms to ledger constraints and its dependency is ***vital***.
+Comparing to *the ordinary Gravity Protocol Node*, it is worth mentioning that *SuSy* differs from it ***only by having dedicated nebulas and extractors***. SuSy conforms to the constraints of the legder, and this dependency is crucial for the system to work.
 
-Gravity Node exists and operates *under the hood* of SuSy. The first one is mainly responsible for reaching the consensus.
+A Gravity Node operates *under the hood* of SuSy, being mainly responsible for reaching the consensus about cross-chain transactions.
 
-#### 2. SuSy Extractor’s uniqueness and specifics.
+#### 2. Distinguishing features of the SuSy Extractor
 
-As regards Extractor's behavior, SuSy aims to set specific duties for it, such as:
-1. *Management of payment state on both chains(target and source).*
-2.  Results confirmation/declining
-3. Observation of payments queue (which payment to operate at the exact timeframe).
+The main goal of the SuSy Extractor is to manage the state on both chains.
 
-The main goal the SuSy extractor should achieve - is to manage the state on both chains.
+With regard to the Extractor's behavior, SuSy aims to establish specific jobs for it, such as:
+1. *Management of the payment states on both chains (target and source).*
+2. Confirmation/rejection of results
+3. Tracking the payments queue (which payment to execute at a specific point in time).
+
 
 ![SuSy extractor](https://i.imgur.com/GuQD90A.png)
 
-By design we have to follow these statements:
-A) Provide the second layer of logic on top accessible data transport controller (HTTP). 
-B) Incapsulate pulse tx resolving. Strictly speaking, lock funds on chain "A" and unlock on chain "B".
-C) Expose routes to compulsory overview data such as "data feed tag" and "description"
-D) Provide route(only one) for accessing transfer state, handle according to params (chain, network id, sender address).
-E) Pulse transaction should be encapsulated (*the user knows nothing about internal ledger*)
+The implementation of the SuSy extractor follows these principles:
+A) Provide a second layer of logic on the highest accessible data transport controller (HTTP). 
+B) Incapsulate interactions with pulse tx, or lock funds on chain "A" and unlock on chain "B".
+C) Expose routes to necessary overview information such as "data feed tag" and "description"
+D) Provide a sole route for accessing the transfer state, handle it according to parameters (chain, network id, sender address).
+E) Pulse transaction should be encapsulated (*the user should know nothing about the internal ledger*)
 
-Extractor operates mainly on ***fetching*** and ***delivering*** current info about the payments on specific chains. The chain info getters should be maintained using ***different adapters*** for specific blockchain because API differs. Adapters inside the extractor combine ***multiple*** chains compatibility. 
+SuSy Extractor operates mainly through ***fetching*** and ***delivering*** current info about payments on specific chains. Because of the potential difference in APIs, the getters of chain info should be maintained using ***different adapters*** for each specific blockchain. Adapters inside the extractor achieve compatibility by combining ***multiple*** chains. 
 
-Here the conclusion is that SuSy ***has only one extractor***. ***Multiple chains compatibility *** suggests ***multiple instances of the same extractor***. Such goal is achieved by ***switching adapters*** inside extractor ***at runtime***. *(the example is in the spec)*. 
+To summarize, SuSy ***only has a single extractor***, whereas ***multiple chains compatibility*** requires ***multiple instances of the same extractor***. This is achieved by ***switching adapters*** inside the extractor ***at runtime***. *(the example is in the specification)*. 
