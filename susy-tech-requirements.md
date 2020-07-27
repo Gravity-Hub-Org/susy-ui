@@ -37,11 +37,17 @@ With regard to the Extractor's behavior, SuSy aims to establish specific jobs fo
 ![SuSy extractor](https://i.imgur.com/GuQD90A.png)
 
 The implementation of the SuSy extractor follows these principles:
-A) Provide a second layer of logic on the highest accessible data transport controller (HTTP). 
-B) Incapsulate interactions with pulse tx, or lock funds on chain "A" and unlock on chain "B".
-C) Expose routes to necessary overview information such as "data feed tag" and "description"
-D) Provide a sole route for accessing the transfer state, handle it according to parameters (chain, network id, sender address).
+
+A) Provide a second layer of logic on the highest accessible data transport controller (HTTP) 
+
+B) Incapsulate interactions with pulse tx (locking funds on chain "A" and unlocking on chain "B")
+
+C) Expose routes to necessary general information such as "data feed tag" and "description"
+
+D) Provide a sole route for accessing the transfer state, handle it according to parameters (chain, network id, sender address)
+
 E) Pulse transaction should be encapsulated (*the user should know nothing about the internal ledger*)
+
 
 SuSy Extractor operates mainly through ***fetching*** and ***delivering*** current info about payments on specific chains. Because of the potential difference in APIs, the getters of chain info should be maintained using ***different adapters*** for each specific blockchain. Adapters inside the extractor achieve compatibility by combining ***multiple*** chains. 
 
